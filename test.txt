@@ -1,0 +1,37 @@
+
+int
+piperead(struct pipe *pi, uint64 addr, int n)
+{
+  int i, cnt=n, k= PIPESIZE;
+  struct proc *pr = myproc();
+  char ch[PIPESIZE];
+
+  acquire(&pi->lock);
+  while(pi->nread == pi->nwrite && pi->writeopen){  //DOC: pipe-empty
+    if(pr->killed){
+      release(&pi->lock);
+      return -1;
+    }
+    sleep(&pi->nread, &pi->lock); //DOC: piperead-sleep
+  }
+  
+  for(i = 0; i < n; i+=k){  //DOC: piperead-copy
+    if(pi->nread == pi->nwrite)
+      break;
+    if(cnt < PIPESIZE)
+	k = cnt;
+    for(int j=0; j<k; j++){
+	    ch[j] = pi->data[pi->nread++ % PIPESIZE];
+    }
+    cnt -= k;
+
+	if(copyout(pr->pagetable, addr + i, &ch, k) == -1)
+	      break;
+  }
+
+
+  wakeup(&pi->nwrite);  //DOC: piperead-wakeup
+  release(&pi->lock);
+  return i;
+}
+

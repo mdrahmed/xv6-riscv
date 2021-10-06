@@ -1,0 +1,88 @@
+
+void*
+my_memmove(void *dst, const void *src, uint n)
+{
+  //64 bit declaration
+  typedef uint64 __attribute__((__may_alias__)) u64;
+  
+  const u64 *s;
+  u64 *d;
+  //int cnt =n,k=0;
+
+
+  //trying 32 bit
+  /* typedef uint32 __attribute__((__may_alias__)) u32;
+  const u32 *s;
+  u32 *d; */
+
+  s = src;
+  d = dst;
+
+  if(s < d && s + n > d){
+    s += (n*8);
+    d += (n*8);
+    while(n >= 8){
+      *--d = *--s;
+      n -= 8;
+    }
+    const char *s2;
+    char *d2;
+    s2 = (const char*)s;
+    d2 = (char*)d;
+    while(n-- > 0)
+      *--d2 = *--s2;
+  } 
+  else{
+    while(n >= 8){
+      *d++ = *s++;
+      n -= 8;
+    }
+    const char *s2;
+    char *d2;
+    s2 = (const char*)s;
+    d2 = (char*)d;
+    while(n-- > 0){
+      *d2++ = *s2++;
+    }
+  }
+
+  return dst;
+}
+
+
+int
+pipewrite(struct pipe *pi, uint64 addr, int n)
+{
+  int i = 0, cnt =n;
+  struct proc *pr = myproc();
+
+  acquire(&pi->lock);
+  while(i < n){
+    if(pi->readopen == 0 || pr->killed){
+      release(&pi->lock);
+      return -1;
+    }
+    if(pi->nwrite == pi->nread + PIPESIZE){ //DOC: pipewrite-full
+      wakeup(&pi->nread);
+      sleep(&pi->nwrite, &pi->lock);
+    } else {
+      char ch[PIPESIZE];
+      int k=PIPESIZE;
+      if(cnt < PIPESIZE)
+        k = cnt;
+      if(copyin(pr->pagetable, ch, addr + i, k) == -1)
+        break;
+      for(int j=0; j<k; j++){
+        pi->data[pi->nwrite++ % PIPESIZE] = ch[j];
+      }
+      i+=k;
+      cnt -= k;
+    }
+  }
+  wakeup(&pi->nread);
+  release(&pi->lock);
+
+  return i;
+}
+
+
