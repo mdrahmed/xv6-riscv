@@ -14,7 +14,7 @@ int main()
   uint64* addr = &addri;
   int bytesi = 0; // = (int *) 0;
   int *bytes = &bytesi;
-  int bytes_want_to_read = 13;// 65536;//(10485760/8);
+  int bytes_want_to_read = 14;// 65536;//(10485760/8);
 
   // int start_time, elasped_time;
   // start_time = uptime();
@@ -22,7 +22,7 @@ int main()
   printf("before write addr %d\n", addr);
   printf("before write bytes %d\n", bytes);
 //start here
-  ringbuf_start_write(ring_desc, addr, bytes);
+  ringbuf_start_write(ring_desc, &addr, bytes);
   printf("after start_write addr %d\n", addr);
   printf("after start_write bytes %d\n\n", *bytes);
 

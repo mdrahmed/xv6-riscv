@@ -55,8 +55,9 @@ int create_or_close_the_buffer_user(char name[16], int open_close){
 }
 
 //// rings starting to write 
-void ringbuf_start_write(int ring_desc, uint64 *addr, int *bytes){ // address ta double pointer hobe
-  *addr = (4096*16)-(rings[ring_desc].book->write_done++) % 4096;
+void ringbuf_start_write(int ring_desc, uint64 **addr, int *bytes){ // address ta double pointer hobe
+  // *addr = (4096*16)-(rings[ring_desc].book->write_done++) % 4096;
+  *addr = rings[ring_desc].buf;
   if(*bytes == 0){
     *bytes = 4096*16 -(rings[ring_desc].book->write_done - rings[0].book->read_done);
   }
