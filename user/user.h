@@ -60,7 +60,7 @@ int atoi(const char*);
 int memcmp(const void *, const void *, uint);
 void *memcpy(void *, const void *, uint);
 
-int create_or_close_the_buffer_user(char *, int);
+int create_or_close_the_buffer_user(char *, int, uint64 **);
 void ringbuf_start_write(int , uint64 **, int *);
 void ringbuf_start_read(int , uint64 *, int *);
 void ringbuf_finish_write(int , int );

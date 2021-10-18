@@ -729,7 +729,7 @@ panic(char *s)
     80000562:	024080e7          	jalr	36(ra) # 80000582 <printf>
   printf("\n");
     80000566:	00008517          	auipc	a0,0x8
-    8000056a:	33a50513          	addi	a0,a0,826 # 800088a0 <syscalls+0x470>
+    8000056a:	37250513          	addi	a0,a0,882 # 800088d8 <syscalls+0x4a8>
     8000056e:	00000097          	auipc	ra,0x0
     80000572:	014080e7          	jalr	20(ra) # 80000582 <printf>
   panicked = 1; // freeze uart output from other CPUs
@@ -2095,7 +2095,7 @@ main()
     80000ee4:	882080e7          	jalr	-1918(ra) # 80000762 <printfinit>
     printf("\n");
     80000ee8:	00008517          	auipc	a0,0x8
-    80000eec:	9b850513          	addi	a0,a0,-1608 # 800088a0 <syscalls+0x470>
+    80000eec:	9f050513          	addi	a0,a0,-1552 # 800088d8 <syscalls+0x4a8>
     80000ef0:	fffff097          	auipc	ra,0xfffff
     80000ef4:	692080e7          	jalr	1682(ra) # 80000582 <printf>
     printf("xv6 kernel is booting\n");
@@ -2105,7 +2105,7 @@ main()
     80000f04:	682080e7          	jalr	1666(ra) # 80000582 <printf>
     printf("\n");
     80000f08:	00008517          	auipc	a0,0x8
-    80000f0c:	99850513          	addi	a0,a0,-1640 # 800088a0 <syscalls+0x470>
+    80000f0c:	9d050513          	addi	a0,a0,-1584 # 800088d8 <syscalls+0x4a8>
     80000f10:	fffff097          	auipc	ra,0xfffff
     80000f14:	672080e7          	jalr	1650(ra) # 80000582 <printf>
     kinit();         // physical page allocator
@@ -3826,7 +3826,7 @@ forkret(void)
 
   if (first) {
     80001ab6:	00007797          	auipc	a5,0x7
-    80001aba:	e6a7a783          	lw	a5,-406(a5) # 80008920 <first.1>
+    80001aba:	eba7a783          	lw	a5,-326(a5) # 80008970 <first.1>
     80001abe:	eb89                	bnez	a5,80001ad0 <forkret+0x32>
     // be run from main().
     first = 0;
@@ -3843,7 +3843,7 @@ forkret(void)
     80001ace:	8082                	ret
     first = 0;
     80001ad0:	00007797          	auipc	a5,0x7
-    80001ad4:	e407a823          	sw	zero,-432(a5) # 80008920 <first.1>
+    80001ad4:	ea07a023          	sw	zero,-352(a5) # 80008970 <first.1>
     fsinit(ROOTDEV);
     80001ad8:	4505                	li	a0,1
     80001ada:	00002097          	auipc	ra,0x2
@@ -3866,7 +3866,7 @@ allocpid() {
     80001afe:	0d6080e7          	jalr	214(ra) # 80000bd0 <acquire>
   pid = nextpid;
     80001b02:	00007797          	auipc	a5,0x7
-    80001b06:	e2278793          	addi	a5,a5,-478 # 80008924 <nextpid>
+    80001b06:	e7278793          	addi	a5,a5,-398 # 80008974 <nextpid>
     80001b0a:	4384                	lw	s1,0(a5)
   nextpid = nextpid + 1;
     80001b0c:	0014871b          	addiw	a4,s1,1
@@ -4157,7 +4157,7 @@ allocpid() {
   uvminit(p->pagetable, initcode, sizeof(initcode));
     80001d5a:	03400613          	li	a2,52
     80001d5e:	00007597          	auipc	a1,0x7
-    80001d62:	bd258593          	addi	a1,a1,-1070 # 80008930 <initcode>
+    80001d62:	c2258593          	addi	a1,a1,-990 # 80008980 <initcode>
     80001d66:	6928                	ld	a0,80(a0)
     80001d68:	fffff097          	auipc	ra,0xfffff
     80001d6c:	5da080e7          	jalr	1498(ra) # 80001342 <uvminit>
@@ -5185,7 +5185,7 @@ procdump(void)
 
   printf("\n");
     8000258c:	00006517          	auipc	a0,0x6
-    80002590:	31450513          	addi	a0,a0,788 # 800088a0 <syscalls+0x470>
+    80002590:	34c50513          	addi	a0,a0,844 # 800088d8 <syscalls+0x4a8>
     80002594:	ffffe097          	auipc	ra,0xffffe
     80002598:	fee080e7          	jalr	-18(ra) # 80000582 <printf>
   for(p = proc; p < &proc[NPROC]; p++){
@@ -5207,7 +5207,7 @@ procdump(void)
     800025ba:	cbaa8a93          	addi	s5,s5,-838 # 80008270 <digits+0x230>
     printf("\n");
     800025be:	00006a17          	auipc	s4,0x6
-    800025c2:	2e2a0a13          	addi	s4,s4,738 # 800088a0 <syscalls+0x470>
+    800025c2:	31aa0a13          	addi	s4,s4,794 # 800088d8 <syscalls+0x4a8>
     if(p->state >= 0 && p->state < NELEM(states) && states[p->state])
     800025c6:	00006b97          	auipc	s7,0x6
     800025ca:	ce2b8b93          	addi	s7,s7,-798 # 800082a8 <states.0>
@@ -13066,88 +13066,86 @@ uint64 create_the_buffer(char nameBuf[16], int open_or_close, uint64 *address_64
     800063b0:	892e                	mv	s2,a1
   int i,j;
   // uint64 first_va;
-
-  //initializing the lock
-  initlock(&ringbuf_lk.ringbuf_lock, "ring_lock");
-    800063b2:	00002597          	auipc	a1,0x2
-    800063b6:	4ae58593          	addi	a1,a1,1198 # 80008860 <syscalls+0x430>
-    800063ba:	00020517          	auipc	a0,0x20
-    800063be:	c4650513          	addi	a0,a0,-954 # 80026000 <ringbuf_lk>
-    800063c2:	ffffa097          	auipc	ra,0xffffa
-    800063c6:	77e080e7          	jalr	1918(ra) # 80000b40 <initlock>
+  printf("address_64bit_ring_buffer_mapped - %d \n", address_64bit_ring_buffer_mapped);
+    800063b2:	85b2                	mv	a1,a2
+    800063b4:	00002517          	auipc	a0,0x2
+    800063b8:	4ac50513          	addi	a0,a0,1196 # 80008860 <syscalls+0x430>
+    800063bc:	ffffa097          	auipc	ra,0xffffa
+    800063c0:	1c6080e7          	jalr	454(ra) # 80000582 <printf>
 
   for(i=0; i<MAX_RINGBUFS; i++){
     if(ringbufs[i].name != nameBuf || ringbufs[i].refcount == 0 ){
-    800063ca:	00020797          	auipc	a5,0x20
-    800063ce:	c5278793          	addi	a5,a5,-942 # 8002601c <ringbufs+0x4>
-    800063d2:	06f49363          	bne	s1,a5,80006438 <create_the_buffer+0xa4>
-    800063d6:	00020a17          	auipc	s4,0x20
-    800063da:	c42a2a03          	lw	s4,-958(s4) # 80026018 <ringbufs>
+    800063c4:	00020797          	auipc	a5,0x20
+    800063c8:	c4078793          	addi	a5,a5,-960 # 80026004 <ringbufs+0x4>
+    800063cc:	06f49363          	bne	s1,a5,80006432 <create_the_buffer+0x9e>
+    800063d0:	00020a17          	auipc	s4,0x20
+    800063d4:	c30a2a03          	lw	s4,-976(s4) # 80026000 <ringbufs>
   for(i=0; i<MAX_RINGBUFS; i++){
-    800063de:	01403a33          	snez	s4,s4
+    800063d8:	01403a33          	snez	s4,s4
       for(int k=0; k<16;k++)
-    800063e2:	87a6                	mv	a5,s1
-    800063e4:	002a1993          	slli	s3,s4,0x2
-    800063e8:	99d2                	add	s3,s3,s4
-    800063ea:	00599a93          	slli	s5,s3,0x5
-    800063ee:	00020717          	auipc	a4,0x20
-    800063f2:	c2e70713          	addi	a4,a4,-978 # 8002601c <ringbufs+0x4>
-    800063f6:	9756                	add	a4,a4,s5
-    800063f8:	01048613          	addi	a2,s1,16
+    800063dc:	87a6                	mv	a5,s1
+    800063de:	002a1993          	slli	s3,s4,0x2
+    800063e2:	99d2                	add	s3,s3,s4
+    800063e4:	00599a93          	slli	s5,s3,0x5
+    800063e8:	00020717          	auipc	a4,0x20
+    800063ec:	c1c70713          	addi	a4,a4,-996 # 80026004 <ringbufs+0x4>
+    800063f0:	9756                	add	a4,a4,s5
+    800063f2:	01048613          	addi	a2,s1,16
         ringbufs[i].name[k] = nameBuf[k];
-    800063fc:	0007c683          	lbu	a3,0(a5)
-    80006400:	00d70023          	sb	a3,0(a4)
+    800063f6:	0007c683          	lbu	a3,0(a5)
+    800063fa:	00d70023          	sb	a3,0(a4)
       for(int k=0; k<16;k++)
-    80006404:	0785                	addi	a5,a5,1
-    80006406:	0705                	addi	a4,a4,1
-    80006408:	fec79ae3          	bne	a5,a2,800063fc <create_the_buffer+0x68>
+    800063fe:	0785                	addi	a5,a5,1
+    80006400:	0705                	addi	a4,a4,1
+    80006402:	fec79ae3          	bne	a5,a2,800063f6 <create_the_buffer+0x62>
       //printf("Name of ring buffer: %s\n", ringbufs[i].name);
       break;
     }
   }
   if(open_or_close == 1){
-    8000640c:	4785                	li	a5,1
-    8000640e:	02f90763          	beq	s2,a5,8000643c <create_the_buffer+0xa8>
+    80006406:	4785                	li	a5,1
+    80006408:	02f90763          	beq	s2,a5,80006436 <create_the_buffer+0xa2>
 
   }
   else{
     //free up memory;
     //acquire lock
      acquire(&ringbuf_lk.ringbuf_lock);
-    80006412:	00020517          	auipc	a0,0x20
-    80006416:	bee50513          	addi	a0,a0,-1042 # 80026000 <ringbuf_lk>
-    8000641a:	ffffa097          	auipc	ra,0xffffa
-    8000641e:	7b6080e7          	jalr	1974(ra) # 80000bd0 <acquire>
+    8000640c:	00020517          	auipc	a0,0x20
+    80006410:	23450513          	addi	a0,a0,564 # 80026640 <ringbuf_lk>
+    80006414:	ffffa097          	auipc	ra,0xffffa
+    80006418:	7bc080e7          	jalr	1980(ra) # 80000bd0 <acquire>
     for(j=0;j<16;j++){
-    80006422:	00020497          	auipc	s1,0x20
-    80006426:	bf648493          	addi	s1,s1,-1034 # 80026018 <ringbufs>
-    8000642a:	94d6                	add	s1,s1,s5
-    8000642c:	00020997          	auipc	s3,0x20
-    80006430:	c6c98993          	addi	s3,s3,-916 # 80026098 <ringbufs+0x80>
-    80006434:	99d6                	add	s3,s3,s5
-    80006436:	a2dd                	j	8000661c <create_the_buffer+0x288>
+    8000641c:	00020497          	auipc	s1,0x20
+    80006420:	be448493          	addi	s1,s1,-1052 # 80026000 <ringbufs>
+    80006424:	94d6                	add	s1,s1,s5
+    80006426:	00020997          	auipc	s3,0x20
+    8000642a:	c5a98993          	addi	s3,s3,-934 # 80026080 <ringbufs+0x80>
+    8000642e:	99d6                	add	s3,s3,s5
+    80006430:	aae5                	j	80006628 <create_the_buffer+0x294>
   for(i=0; i<MAX_RINGBUFS; i++){
-    80006438:	4a01                	li	s4,0
-    8000643a:	b765                	j	800063e2 <create_the_buffer+0x4e>
+    80006432:	4a01                	li	s4,0
+    80006434:	b765                	j	800063dc <create_the_buffer+0x48>
     acquire(&ringbuf_lk.ringbuf_lock);
-    8000643c:	00020497          	auipc	s1,0x20
-    80006440:	bc448493          	addi	s1,s1,-1084 # 80026000 <ringbuf_lk>
-    80006444:	8526                	mv	a0,s1
+    80006436:	00020997          	auipc	s3,0x20
+    8000643a:	bca98993          	addi	s3,s3,-1078 # 80026000 <ringbufs>
+    8000643e:	00020517          	auipc	a0,0x20
+    80006442:	20250513          	addi	a0,a0,514 # 80026640 <ringbuf_lk>
     80006446:	ffffa097          	auipc	ra,0xffffa
     8000644a:	78a080e7          	jalr	1930(ra) # 80000bd0 <acquire>
     ringbufs[i].refcount++;
     8000644e:	002a1793          	slli	a5,s4,0x2
     80006452:	97d2                	add	a5,a5,s4
     80006454:	0796                	slli	a5,a5,0x5
-    80006456:	94be                	add	s1,s1,a5
-    80006458:	4c9c                	lw	a5,24(s1)
-    8000645a:	2785                	addiw	a5,a5,1
-    8000645c:	cc9c                	sw	a5,24(s1)
+    80006456:	97ce                	add	a5,a5,s3
+    80006458:	4398                	lw	a4,0(a5)
+    8000645a:	2705                	addiw	a4,a4,1
+    8000645c:	c398                	sw	a4,0(a5)
     struct proc *pr = myproc();
     8000645e:	ffffb097          	auipc	ra,0xffffb
     80006462:	608080e7          	jalr	1544(ra) # 80001a66 <myproc>
     80006466:	892a                	mv	s2,a0
-    printf("At first the Virtual Address: %p %p\n", vaa, va);
+    printf("At first the Virtual Address: %p %d\n", vaa, va);
     80006468:	020004b7          	lui	s1,0x2000
     8000646c:	14b5                	addi	s1,s1,-19
     8000646e:	00d49613          	slli	a2,s1,0xd
@@ -13155,235 +13153,239 @@ uint64 create_the_buffer(char nameBuf[16], int open_or_close, uint64 *address_64
     80006476:	15f5                	addi	a1,a1,-3
     80006478:	05b2                	slli	a1,a1,0xc
     8000647a:	00002517          	auipc	a0,0x2
-    8000647e:	3f650513          	addi	a0,a0,1014 # 80008870 <syscalls+0x440>
+    8000647e:	40e50513          	addi	a0,a0,1038 # 80008888 <syscalls+0x458>
     80006482:	ffffa097          	auipc	ra,0xffffa
     80006486:	100080e7          	jalr	256(ra) # 80000582 <printf>
+    printf("The address_64bit_ring_buffer_mapped: %d\n", *address_64bit_ring_buffer_mapped);
+    8000648a:	00d49593          	slli	a1,s1,0xd
+    8000648e:	00002517          	auipc	a0,0x2
+    80006492:	42250513          	addi	a0,a0,1058 # 800088b0 <syscalls+0x480>
+    80006496:	ffffa097          	auipc	ra,0xffffa
+    8000649a:	0ec080e7          	jalr	236(ra) # 80000582 <printf>
     for(j=0;j<16;j++){
-    8000648a:	00020997          	auipc	s3,0x20
-    8000648e:	b8e98993          	addi	s3,s3,-1138 # 80026018 <ringbufs>
-    80006492:	99d6                	add	s3,s3,s5
+    8000649e:	99d6                	add	s3,s3,s5
     uint64 va = vaa - (35* PGSIZE);
-    80006494:	04b6                	slli	s1,s1,0xd
+    800064a0:	04b6                	slli	s1,s1,0xd
         printf("mapping 1st virual page\n");
-    80006496:	00002c17          	auipc	s8,0x2
-    8000649a:	412c0c13          	addi	s8,s8,1042 # 800088a8 <syscalls+0x478>
+    800064a2:	00002c17          	auipc	s8,0x2
+    800064a6:	44ec0c13          	addi	s8,s8,1102 # 800088f0 <syscalls+0x4c0>
         printf("unmapped\n");
-    8000649e:	00002c97          	auipc	s9,0x2
-    800064a2:	3fac8c93          	addi	s9,s9,1018 # 80008898 <syscalls+0x468>
+    800064aa:	00002c97          	auipc	s9,0x2
+    800064ae:	436c8c93          	addi	s9,s9,1078 # 800088e0 <syscalls+0x4b0>
         printf("mapping 2nd virtual page\n");
-    800064a6:	00002b97          	auipc	s7,0x2
-    800064aa:	422b8b93          	addi	s7,s7,1058 # 800088c8 <syscalls+0x498>
+    800064b2:	00002b97          	auipc	s7,0x2
+    800064b6:	45eb8b93          	addi	s7,s7,1118 # 80008910 <syscalls+0x4e0>
     for(j=0;j<16;j++){
-    800064ae:	02000b37          	lui	s6,0x2000
-    800064b2:	1b55                	addi	s6,s6,-11
-    800064b4:	0b36                	slli	s6,s6,0xd
-    800064b6:	a805                	j	800064e6 <create_the_buffer+0x152>
+    800064ba:	02000b37          	lui	s6,0x2000
+    800064be:	1b55                	addi	s6,s6,-11
+    800064c0:	0b36                	slli	s6,s6,0xd
+    800064c2:	a805                	j	800064f2 <create_the_buffer+0x15e>
         printf("unmapped\n");
-    800064b8:	8566                	mv	a0,s9
-    800064ba:	ffffa097          	auipc	ra,0xffffa
-    800064be:	0c8080e7          	jalr	200(ra) # 80000582 <printf>
-    800064c2:	a885                	j	80006532 <create_the_buffer+0x19e>
-        printf("mapping 2nd virtual page\n");
-    800064c4:	855e                	mv	a0,s7
+    800064c4:	8566                	mv	a0,s9
     800064c6:	ffffa097          	auipc	ra,0xffffa
     800064ca:	0bc080e7          	jalr	188(ra) # 80000582 <printf>
+    800064ce:	a885                	j	8000653e <create_the_buffer+0x1aa>
+        printf("mapping 2nd virtual page\n");
+    800064d0:	855e                	mv	a0,s7
+    800064d2:	ffffa097          	auipc	ra,0xffffa
+    800064d6:	0b0080e7          	jalr	176(ra) # 80000582 <printf>
       uvmunmap(pr->pagetable, va, PGROUNDUP(4096)/PGSIZE, 1);
-    800064ce:	4685                	li	a3,1
-    800064d0:	4605                	li	a2,1
-    800064d2:	85a6                	mv	a1,s1
-    800064d4:	05093503          	ld	a0,80(s2)
-    800064d8:	ffffb097          	auipc	ra,0xffffb
-    800064dc:	d78080e7          	jalr	-648(ra) # 80001250 <uvmunmap>
+    800064da:	4685                	li	a3,1
+    800064dc:	4605                	li	a2,1
+    800064de:	85a6                	mv	a1,s1
+    800064e0:	05093503          	ld	a0,80(s2)
+    800064e4:	ffffb097          	auipc	ra,0xffffb
+    800064e8:	d6c080e7          	jalr	-660(ra) # 80001250 <uvmunmap>
     for(j=0;j<16;j++){
-    800064e0:	09a1                	addi	s3,s3,8
-    800064e2:	09648d63          	beq	s1,s6,8000657c <create_the_buffer+0x1e8>
+    800064ec:	09a1                	addi	s3,s3,8
+    800064ee:	09648d63          	beq	s1,s6,80006588 <create_the_buffer+0x1f4>
       ringbufs[i].buf[j] = kalloc();
-    800064e6:	ffffa097          	auipc	ra,0xffffa
-    800064ea:	5fa080e7          	jalr	1530(ra) # 80000ae0 <kalloc>
-    800064ee:	8ace                	mv	s5,s3
-    800064f0:	00a9bc23          	sd	a0,24(s3)
+    800064f2:	ffffa097          	auipc	ra,0xffffa
+    800064f6:	5ee080e7          	jalr	1518(ra) # 80000ae0 <kalloc>
+    800064fa:	8ace                	mv	s5,s3
+    800064fc:	00a9bc23          	sd	a0,24(s3)
       memset(ringbufs[i].buf[j], 0, 4096);
-    800064f4:	6605                	lui	a2,0x1
-    800064f6:	4581                	li	a1,0
-    800064f8:	ffffa097          	auipc	ra,0xffffa
-    800064fc:	7d4080e7          	jalr	2004(ra) # 80000ccc <memset>
+    80006500:	6605                	lui	a2,0x1
+    80006502:	4581                	li	a1,0
+    80006504:	ffffa097          	auipc	ra,0xffffa
+    80006508:	7c8080e7          	jalr	1992(ra) # 80000ccc <memset>
       mappages(pr->pagetable, va, 4096, (uint64)ringbufs[i].buf[j], PTE_W|PTE_R|PTE_U);
-    80006500:	4759                	li	a4,22
-    80006502:	0189b683          	ld	a3,24(s3)
-    80006506:	6605                	lui	a2,0x1
-    80006508:	85a6                	mv	a1,s1
-    8000650a:	05093503          	ld	a0,80(s2)
-    8000650e:	ffffb097          	auipc	ra,0xffffb
-    80006512:	b8e080e7          	jalr	-1138(ra) # 8000109c <mappages>
+    8000650c:	4759                	li	a4,22
+    8000650e:	0189b683          	ld	a3,24(s3)
+    80006512:	6605                	lui	a2,0x1
+    80006514:	85a6                	mv	a1,s1
+    80006516:	05093503          	ld	a0,80(s2)
+    8000651a:	ffffb097          	auipc	ra,0xffffb
+    8000651e:	b82080e7          	jalr	-1150(ra) # 8000109c <mappages>
       pte =  walk(pr->pagetable,va, 0);
-    80006516:	4601                	li	a2,0
-    80006518:	85a6                	mv	a1,s1
-    8000651a:	05093503          	ld	a0,80(s2)
-    8000651e:	ffffb097          	auipc	ra,0xffffb
-    80006522:	a96080e7          	jalr	-1386(ra) # 80000fb4 <walk>
+    80006522:	4601                	li	a2,0
+    80006524:	85a6                	mv	a1,s1
+    80006526:	05093503          	ld	a0,80(s2)
+    8000652a:	ffffb097          	auipc	ra,0xffffb
+    8000652e:	a8a080e7          	jalr	-1398(ra) # 80000fb4 <walk>
       if(pte == 0)
-    80006526:	d949                	beqz	a0,800064b8 <create_the_buffer+0x124>
+    80006532:	d949                	beqz	a0,800064c4 <create_the_buffer+0x130>
         printf("mapping 1st virual page\n");
-    80006528:	8562                	mv	a0,s8
-    8000652a:	ffffa097          	auipc	ra,0xffffa
-    8000652e:	058080e7          	jalr	88(ra) # 80000582 <printf>
+    80006534:	8562                	mv	a0,s8
+    80006536:	ffffa097          	auipc	ra,0xffffa
+    8000653a:	04c080e7          	jalr	76(ra) # 80000582 <printf>
       uvmunmap(pr->pagetable, va, PGROUNDUP(4096)/PGSIZE, 1);
-    80006532:	4685                	li	a3,1
-    80006534:	4605                	li	a2,1
-    80006536:	85a6                	mv	a1,s1
-    80006538:	05093503          	ld	a0,80(s2)
-    8000653c:	ffffb097          	auipc	ra,0xffffb
-    80006540:	d14080e7          	jalr	-748(ra) # 80001250 <uvmunmap>
+    8000653e:	4685                	li	a3,1
+    80006540:	4605                	li	a2,1
+    80006542:	85a6                	mv	a1,s1
+    80006544:	05093503          	ld	a0,80(s2)
+    80006548:	ffffb097          	auipc	ra,0xffffb
+    8000654c:	d08080e7          	jalr	-760(ra) # 80001250 <uvmunmap>
       va += 4096;
-    80006544:	6785                	lui	a5,0x1
-    80006546:	94be                	add	s1,s1,a5
+    80006550:	6785                	lui	a5,0x1
+    80006552:	94be                	add	s1,s1,a5
       mappages(pr->pagetable, va, 4096, (uint64)ringbufs[i].buf[j], PTE_W | PTE_R | PTE_U);
-    80006548:	4759                	li	a4,22
-    8000654a:	018ab683          	ld	a3,24(s5)
-    8000654e:	6605                	lui	a2,0x1
-    80006550:	85a6                	mv	a1,s1
-    80006552:	05093503          	ld	a0,80(s2)
-    80006556:	ffffb097          	auipc	ra,0xffffb
-    8000655a:	b46080e7          	jalr	-1210(ra) # 8000109c <mappages>
+    80006554:	4759                	li	a4,22
+    80006556:	018ab683          	ld	a3,24(s5)
+    8000655a:	6605                	lui	a2,0x1
+    8000655c:	85a6                	mv	a1,s1
+    8000655e:	05093503          	ld	a0,80(s2)
+    80006562:	ffffb097          	auipc	ra,0xffffb
+    80006566:	b3a080e7          	jalr	-1222(ra) # 8000109c <mappages>
       pte1 =  walk(pr->pagetable,va, 0);
-    8000655e:	4601                	li	a2,0
-    80006560:	85a6                	mv	a1,s1
-    80006562:	05093503          	ld	a0,80(s2)
-    80006566:	ffffb097          	auipc	ra,0xffffb
-    8000656a:	a4e080e7          	jalr	-1458(ra) # 80000fb4 <walk>
+    8000656a:	4601                	li	a2,0
+    8000656c:	85a6                	mv	a1,s1
+    8000656e:	05093503          	ld	a0,80(s2)
+    80006572:	ffffb097          	auipc	ra,0xffffb
+    80006576:	a42080e7          	jalr	-1470(ra) # 80000fb4 <walk>
       if(pte1 == 0)
-    8000656e:	f939                	bnez	a0,800064c4 <create_the_buffer+0x130>
+    8000657a:	f939                	bnez	a0,800064d0 <create_the_buffer+0x13c>
         printf("unmapped\n");
-    80006570:	8566                	mv	a0,s9
-    80006572:	ffffa097          	auipc	ra,0xffffa
-    80006576:	010080e7          	jalr	16(ra) # 80000582 <printf>
-    8000657a:	bf91                	j	800064ce <create_the_buffer+0x13a>
+    8000657c:	8566                	mv	a0,s9
+    8000657e:	ffffa097          	auipc	ra,0xffffa
+    80006582:	004080e7          	jalr	4(ra) # 80000582 <printf>
+    80006586:	bf91                	j	800064da <create_the_buffer+0x146>
     ringbufs[i].book = kalloc();
-    8000657c:	ffffa097          	auipc	ra,0xffffa
-    80006580:	564080e7          	jalr	1380(ra) # 80000ae0 <kalloc>
-    80006584:	86aa                	mv	a3,a0
-    80006586:	002a1793          	slli	a5,s4,0x2
-    8000658a:	9a3e                	add	s4,s4,a5
-    8000658c:	0a16                	slli	s4,s4,0x5
-    8000658e:	00020797          	auipc	a5,0x20
-    80006592:	a7278793          	addi	a5,a5,-1422 # 80026000 <ringbuf_lk>
+    80006588:	ffffa097          	auipc	ra,0xffffa
+    8000658c:	558080e7          	jalr	1368(ra) # 80000ae0 <kalloc>
+    80006590:	86aa                	mv	a3,a0
+    80006592:	002a1793          	slli	a5,s4,0x2
     80006596:	9a3e                	add	s4,s4,a5
-    80006598:	0aaa3823          	sd	a0,176(s4)
+    80006598:	0a16                	slli	s4,s4,0x5
+    8000659a:	00020797          	auipc	a5,0x20
+    8000659e:	a6678793          	addi	a5,a5,-1434 # 80026000 <ringbufs>
+    800065a2:	9a3e                	add	s4,s4,a5
+    800065a4:	08aa3c23          	sd	a0,152(s4)
     mappages(pr->pagetable, va, 4096, (uint64)ringbufs[i].book, PTE_W | PTE_R | PTE_U);
-    8000659c:	4759                	li	a4,22
-    8000659e:	6605                	lui	a2,0x1
-    800065a0:	040004b7          	lui	s1,0x4000
-    800065a4:	14ad                	addi	s1,s1,-21
-    800065a6:	00c49593          	slli	a1,s1,0xc
-    800065aa:	05093503          	ld	a0,80(s2)
-    800065ae:	ffffb097          	auipc	ra,0xffffb
-    800065b2:	aee080e7          	jalr	-1298(ra) # 8000109c <mappages>
+    800065a8:	4759                	li	a4,22
+    800065aa:	6605                	lui	a2,0x1
+    800065ac:	040004b7          	lui	s1,0x4000
+    800065b0:	14ad                	addi	s1,s1,-21
+    800065b2:	00c49593          	slli	a1,s1,0xc
+    800065b6:	05093503          	ld	a0,80(s2)
+    800065ba:	ffffb097          	auipc	ra,0xffffb
+    800065be:	ae2080e7          	jalr	-1310(ra) # 8000109c <mappages>
     pte1 =  walk(pr->pagetable,va, 0);
-    800065b6:	4601                	li	a2,0
-    800065b8:	00c49593          	slli	a1,s1,0xc
-    800065bc:	05093503          	ld	a0,80(s2)
-    800065c0:	ffffb097          	auipc	ra,0xffffb
-    800065c4:	9f4080e7          	jalr	-1548(ra) # 80000fb4 <walk>
+    800065c2:	4601                	li	a2,0
+    800065c4:	00c49593          	slli	a1,s1,0xc
+    800065c8:	05093503          	ld	a0,80(s2)
+    800065cc:	ffffb097          	auipc	ra,0xffffb
+    800065d0:	9e8080e7          	jalr	-1560(ra) # 80000fb4 <walk>
     if(pte1 == 0)
-    800065c8:	cd15                	beqz	a0,80006604 <create_the_buffer+0x270>
+    800065d4:	cd15                	beqz	a0,80006610 <create_the_buffer+0x27c>
       printf("Bookkeeping pages are mapped\n");
-    800065ca:	00002517          	auipc	a0,0x2
-    800065ce:	31e50513          	addi	a0,a0,798 # 800088e8 <syscalls+0x4b8>
-    800065d2:	ffffa097          	auipc	ra,0xffffa
-    800065d6:	fb0080e7          	jalr	-80(ra) # 80000582 <printf>
+    800065d6:	00002517          	auipc	a0,0x2
+    800065da:	35a50513          	addi	a0,a0,858 # 80008930 <syscalls+0x500>
+    800065de:	ffffa097          	auipc	ra,0xffffa
+    800065e2:	fa4080e7          	jalr	-92(ra) # 80000582 <printf>
     uvmunmap(pr->pagetable, va, PGROUNDUP(4096)/PGSIZE, 1);
-    800065da:	4685                	li	a3,1
-    800065dc:	4605                	li	a2,1
-    800065de:	040005b7          	lui	a1,0x4000
-    800065e2:	15ad                	addi	a1,a1,-21
-    800065e4:	05b2                	slli	a1,a1,0xc
-    800065e6:	05093503          	ld	a0,80(s2)
-    800065ea:	ffffb097          	auipc	ra,0xffffb
-    800065ee:	c66080e7          	jalr	-922(ra) # 80001250 <uvmunmap>
+    800065e6:	4685                	li	a3,1
+    800065e8:	4605                	li	a2,1
+    800065ea:	040005b7          	lui	a1,0x4000
+    800065ee:	15ad                	addi	a1,a1,-21
+    800065f0:	05b2                	slli	a1,a1,0xc
+    800065f2:	05093503          	ld	a0,80(s2)
+    800065f6:	ffffb097          	auipc	ra,0xffffb
+    800065fa:	c5a080e7          	jalr	-934(ra) # 80001250 <uvmunmap>
     release(&ringbuf_lk.ringbuf_lock);
-    800065f2:	00020517          	auipc	a0,0x20
-    800065f6:	a0e50513          	addi	a0,a0,-1522 # 80026000 <ringbuf_lk>
-    800065fa:	ffffa097          	auipc	ra,0xffffa
-    800065fe:	68a080e7          	jalr	1674(ra) # 80000c84 <release>
-    80006602:	a851                	j	80006696 <create_the_buffer+0x302>
+    800065fe:	00020517          	auipc	a0,0x20
+    80006602:	04250513          	addi	a0,a0,66 # 80026640 <ringbuf_lk>
+    80006606:	ffffa097          	auipc	ra,0xffffa
+    8000660a:	67e080e7          	jalr	1662(ra) # 80000c84 <release>
+    8000660e:	a851                	j	800066a2 <create_the_buffer+0x30e>
       printf("unmapped\n");
-    80006604:	00002517          	auipc	a0,0x2
-    80006608:	29450513          	addi	a0,a0,660 # 80008898 <syscalls+0x468>
-    8000660c:	ffffa097          	auipc	ra,0xffffa
-    80006610:	f76080e7          	jalr	-138(ra) # 80000582 <printf>
-    80006614:	b7d9                	j	800065da <create_the_buffer+0x246>
+    80006610:	00002517          	auipc	a0,0x2
+    80006614:	2d050513          	addi	a0,a0,720 # 800088e0 <syscalls+0x4b0>
+    80006618:	ffffa097          	auipc	ra,0xffffa
+    8000661c:	f6a080e7          	jalr	-150(ra) # 80000582 <printf>
+    80006620:	b7d9                	j	800065e6 <create_the_buffer+0x252>
     for(j=0;j<16;j++){
-    80006616:	04a1                	addi	s1,s1,8
-    80006618:	00998963          	beq	s3,s1,8000662a <create_the_buffer+0x296>
+    80006622:	04a1                	addi	s1,s1,8
+    80006624:	01348963          	beq	s1,s3,80006636 <create_the_buffer+0x2a2>
       if(ringbufs[i].buf[j])
-    8000661c:	6c88                	ld	a0,24(s1)
-    8000661e:	dd65                	beqz	a0,80006616 <create_the_buffer+0x282>
+    80006628:	6c88                	ld	a0,24(s1)
+    8000662a:	dd65                	beqz	a0,80006622 <create_the_buffer+0x28e>
         kfree((char*)ringbufs[i].buf[j]);
-    80006620:	ffffa097          	auipc	ra,0xffffa
-    80006624:	3c4080e7          	jalr	964(ra) # 800009e4 <kfree>
-    80006628:	b7fd                	j	80006616 <create_the_buffer+0x282>
+    8000662c:	ffffa097          	auipc	ra,0xffffa
+    80006630:	3b8080e7          	jalr	952(ra) # 800009e4 <kfree>
+    80006634:	b7fd                	j	80006622 <create_the_buffer+0x28e>
     }
     if(ringbufs[i].book)
-    8000662a:	002a1793          	slli	a5,s4,0x2
-    8000662e:	97d2                	add	a5,a5,s4
-    80006630:	0796                	slli	a5,a5,0x5
-    80006632:	00020717          	auipc	a4,0x20
-    80006636:	9ce70713          	addi	a4,a4,-1586 # 80026000 <ringbuf_lk>
-    8000663a:	97ba                	add	a5,a5,a4
-    8000663c:	7bc8                	ld	a0,176(a5)
-    8000663e:	c509                	beqz	a0,80006648 <create_the_buffer+0x2b4>
+    80006636:	002a1793          	slli	a5,s4,0x2
+    8000663a:	97d2                	add	a5,a5,s4
+    8000663c:	0796                	slli	a5,a5,0x5
+    8000663e:	00020717          	auipc	a4,0x20
+    80006642:	9c270713          	addi	a4,a4,-1598 # 80026000 <ringbufs>
+    80006646:	97ba                	add	a5,a5,a4
+    80006648:	6fc8                	ld	a0,152(a5)
+    8000664a:	c509                	beqz	a0,80006654 <create_the_buffer+0x2c0>
       kfree(ringbufs[i].book);
-    80006640:	ffffa097          	auipc	ra,0xffffa
-    80006644:	3a4080e7          	jalr	932(ra) # 800009e4 <kfree>
+    8000664c:	ffffa097          	auipc	ra,0xffffa
+    80006650:	398080e7          	jalr	920(ra) # 800009e4 <kfree>
     if(ringbufs[i].refcount)
-    80006648:	002a1793          	slli	a5,s4,0x2
-    8000664c:	97d2                	add	a5,a5,s4
-    8000664e:	0796                	slli	a5,a5,0x5
-    80006650:	00020717          	auipc	a4,0x20
-    80006654:	9b070713          	addi	a4,a4,-1616 # 80026000 <ringbuf_lk>
-    80006658:	97ba                	add	a5,a5,a4
-    8000665a:	4f9c                	lw	a5,24(a5)
-    8000665c:	cf89                	beqz	a5,80006676 <create_the_buffer+0x2e2>
+    80006654:	002a1793          	slli	a5,s4,0x2
+    80006658:	97d2                	add	a5,a5,s4
+    8000665a:	0796                	slli	a5,a5,0x5
+    8000665c:	00020717          	auipc	a4,0x20
+    80006660:	9a470713          	addi	a4,a4,-1628 # 80026000 <ringbufs>
+    80006664:	97ba                	add	a5,a5,a4
+    80006666:	439c                	lw	a5,0(a5)
+    80006668:	cf89                	beqz	a5,80006682 <create_the_buffer+0x2ee>
       ringbufs[i].refcount--;
-    8000665e:	002a1713          	slli	a4,s4,0x2
-    80006662:	9a3a                	add	s4,s4,a4
-    80006664:	0a16                	slli	s4,s4,0x5
-    80006666:	00020717          	auipc	a4,0x20
-    8000666a:	99a70713          	addi	a4,a4,-1638 # 80026000 <ringbuf_lk>
+    8000666a:	002a1713          	slli	a4,s4,0x2
     8000666e:	9a3a                	add	s4,s4,a4
-    80006670:	37fd                	addiw	a5,a5,-1
-    80006672:	00fa2c23          	sw	a5,24(s4)
+    80006670:	0a16                	slli	s4,s4,0x5
+    80006672:	00020717          	auipc	a4,0x20
+    80006676:	98e70713          	addi	a4,a4,-1650 # 80026000 <ringbufs>
+    8000667a:	9a3a                	add	s4,s4,a4
+    8000667c:	37fd                	addiw	a5,a5,-1
+    8000667e:	00fa2023          	sw	a5,0(s4)
 
     printf("\nBuffer closed\n\n");
-    80006676:	00002517          	auipc	a0,0x2
-    8000667a:	29250513          	addi	a0,a0,658 # 80008908 <syscalls+0x4d8>
-    8000667e:	ffffa097          	auipc	ra,0xffffa
-    80006682:	f04080e7          	jalr	-252(ra) # 80000582 <printf>
+    80006682:	00002517          	auipc	a0,0x2
+    80006686:	2ce50513          	addi	a0,a0,718 # 80008950 <syscalls+0x520>
+    8000668a:	ffffa097          	auipc	ra,0xffffa
+    8000668e:	ef8080e7          	jalr	-264(ra) # 80000582 <printf>
 
     //   //release lock 
      release(&ringbuf_lk.ringbuf_lock);
-    80006686:	00020517          	auipc	a0,0x20
-    8000668a:	97a50513          	addi	a0,a0,-1670 # 80026000 <ringbuf_lk>
-    8000668e:	ffffa097          	auipc	ra,0xffffa
-    80006692:	5f6080e7          	jalr	1526(ra) # 80000c84 <release>
+    80006692:	00020517          	auipc	a0,0x20
+    80006696:	fae50513          	addi	a0,a0,-82 # 80026640 <ringbuf_lk>
+    8000669a:	ffffa097          	auipc	ra,0xffffa
+    8000669e:	5ea080e7          	jalr	1514(ra) # 80000c84 <release>
   }
 
   return 0;
 }
-    80006696:	4501                	li	a0,0
-    80006698:	60e6                	ld	ra,88(sp)
-    8000669a:	6446                	ld	s0,80(sp)
-    8000669c:	64a6                	ld	s1,72(sp)
-    8000669e:	6906                	ld	s2,64(sp)
-    800066a0:	79e2                	ld	s3,56(sp)
-    800066a2:	7a42                	ld	s4,48(sp)
-    800066a4:	7aa2                	ld	s5,40(sp)
-    800066a6:	7b02                	ld	s6,32(sp)
-    800066a8:	6be2                	ld	s7,24(sp)
-    800066aa:	6c42                	ld	s8,16(sp)
-    800066ac:	6ca2                	ld	s9,8(sp)
-    800066ae:	6125                	addi	sp,sp,96
-    800066b0:	8082                	ret
+    800066a2:	4501                	li	a0,0
+    800066a4:	60e6                	ld	ra,88(sp)
+    800066a6:	6446                	ld	s0,80(sp)
+    800066a8:	64a6                	ld	s1,72(sp)
+    800066aa:	6906                	ld	s2,64(sp)
+    800066ac:	79e2                	ld	s3,56(sp)
+    800066ae:	7a42                	ld	s4,48(sp)
+    800066b0:	7aa2                	ld	s5,40(sp)
+    800066b2:	7b02                	ld	s6,32(sp)
+    800066b4:	6be2                	ld	s7,24(sp)
+    800066b6:	6c42                	ld	s8,16(sp)
+    800066b8:	6ca2                	ld	s9,8(sp)
+    800066ba:	6125                	addi	sp,sp,96
+    800066bc:	8082                	ret
 	...
 
 0000000080007000 <_trampoline>:

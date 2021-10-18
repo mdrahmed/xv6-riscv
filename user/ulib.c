@@ -3,9 +3,9 @@
 #include "kernel/fcntl.h"
 #include "user/user.h"
 
+uint64 vm_addr;
 
 //// user library for ring buffer
-
 struct user_ring_buf {
   uint64 *buf;
   struct book *book;
@@ -26,12 +26,14 @@ int load(uint64 *p) {
   return __atomic_load_8(p, __ATOMIC_SEQ_CST);
 }
 
-int create_or_close_the_buffer_user(char name[16], int open_close){
-  int i;
+int create_or_close_the_buffer_user(char name[16], int open_close, uint64 **addr){
+  int i=0;
+  // *addr = rings[i].buf;
+  // ringbuf(name, open_close);
   if(open_close == 1){
     for(i = 0; i < 10; i++){
       if(rings[i].exists == 0){
-        ringbuf(name, open_close, rings[i].buf);
+        ringbuf(name, open_close, &vm_addr);
         rings[i].book->write_done = 0;
         rings[i].book->read_done = 0;
         rings[i].exists++;
@@ -45,21 +47,23 @@ int create_or_close_the_buffer_user(char name[16], int open_close){
   else{
     for(i = 0; i < 10; i++){
       if(rings[i].exists != 0){
-        ringbuf(name, open_close, rings[i].buf);
+        ringbuf(name, open_close, &vm_addr);
+        rings[i].book->write_done = 0;
+        rings[i].book->read_done = 0;
         rings[i].exists = 0;
+        
       }
     }
   }
-  
+  *addr = (uint64*)vm_addr;
   return i;
 }
 
 //// rings starting to write 
-void ringbuf_start_write(int ring_desc, uint64 **addr, int *bytes){ // address ta double pointer hobe
-  // *addr = (4096*16)-(rings[ring_desc].book->write_done++) % 4096;
-  *addr = rings[ring_desc].buf;
+void ringbuf_start_write(int ring_desc, uint64 **addr, int *bytes){ 
+  *addr = (uint64*)vm_addr;
   if(*bytes == 0){
-    *bytes = 4096*16 -(rings[ring_desc].book->write_done - rings[0].book->read_done);
+    *bytes = (4096*16) -(rings[ring_desc].book->write_done - rings[0].book->read_done);
   }
   else{
     *bytes = load(&(rings[ring_desc].book->write_done));
@@ -76,7 +80,8 @@ void check_bytes_written(int ring_desc, int *bytes){
 }
 
 ////rings starting to read
-void ringbuf_start_read(int ring_desc, uint64 *addr, int *bytes){ // address ta double pointer hobe
+void ringbuf_start_read(int ring_desc, uint64 *addr, int *bytes){ 
+  // *addr = (4096*16)-(rings[ring_desc].book->write_done++) % 4096;
   if(rings[ring_desc].book -> read_done == 0){
     *bytes = (rings[ring_desc].book->write_done - rings[ring_desc].book->read_done);
     *bytes /= 8;

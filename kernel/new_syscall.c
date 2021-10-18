@@ -57,7 +57,9 @@ uint64 create_the_buffer(char nameBuf[16], int open_or_close, uint64 *address_64
     /// the math here is = (2^39 - (4096*2)) =549755805696 (-) (4096*33)
     struct proc *pr = myproc();
     uint64 va = vaa - (35* PGSIZE);
-    printf("At first the Virtual Address: %p %p\n", vaa, va);
+    printf("At first the Virtual Address: %p\n", va);
+    // *address_64bit_ring_buffer_mapped = va;
+    // printf("The address_64bit_ring_buffer_mapped: %p\n", *address_64bit_ring_buffer_mapped);
 
     //uint64 *pa; //// now the physical address will be updated to the ring buffers buf variable
 

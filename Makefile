@@ -29,7 +29,7 @@ OBJS = \
   $K/kernelvec.o \
   $K/plic.o \
   $K/virtio_disk.o \
-  $K/new_syscall.o \
+  $K/ringbuf.o \
 
 # riscv64-unknown-elf- or riscv64-linux-gnu-
 # perhaps in /opt/riscv/bin
@@ -141,7 +141,7 @@ UPROGS=\
 	$U/_cc\
 	$U/_pipetest\
 	$U/_my_memmove\
-	$U/_test_new_syscall \
+	$U/_ringtest \
 
 fs.img: mkfs/mkfs README $(UPROGS)
 	mkfs/mkfs fs.img README $(UPROGS)
